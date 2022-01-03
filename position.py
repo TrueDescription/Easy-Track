@@ -62,6 +62,7 @@ class Position:
         div_history = history.dividends
         number_of_shares = 0
         self.div_history = {}
+        self.dividends = 0
         i = 0
         for transaction in self.transactions:
             if transaction.transaction_identifier == 'buy':
