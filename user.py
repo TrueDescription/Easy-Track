@@ -10,6 +10,7 @@ class User:
         self.user_data = UserData(username, start_date)
         self.portfolio_mv = 0
         self.cash = 0
+        self.history = []
 
     def make_transaction(self, ticker: str, name: str, transaction_identifier: str, date: datetime, shares: float,
                          commission: float, notes: str, cost_per_share: float):
@@ -43,7 +44,10 @@ class User:
 
     def buy_security(self, position: Position, amount: float, date: datetime, commission: float, cost_per_share: float,
                      notes=''):
-        pass
+        self.history.append(['sell', position.ticker, date, amount])
+        self.make_transaction(position.ticker, position.name, 'buy', date, amount, commission, notes, cost_per_share)
+        self.cash -= amount * cost_per_share
+        self.update_mv()
 
     def sell_security(self, position: Position, amount: float, date: datetime, commission: float, cost_per_share: float,
                       notes=''):
@@ -52,19 +56,24 @@ class User:
         self.cash += amount * cost_per_share
         self.make_transaction(position.ticker, position.name, 'sell', date, amount, commission, notes, cost_per_share)
         self.update_mv()
+        self.history.append(['sell', position.ticker, date, amount])
 
-    def deposit_cash(self, amount: float):
+    def deposit_cash(self, amount: float, date: datetime):
         self.cash += amount
         self.portfolio_mv += amount
+        self.history.append(['deposit',
+                            'cash', date, amount])
 
-    def withdraw_case(self, amount: float):
+    def withdraw_cash(self, amount: float, date: datetime):
         self.cash -= amount
         self.portfolio_mv -= amount
+        self.history.append(['withdraw', 'cash', date, amount])
 
     def get_cash(self):
         return self.cash
 
     def get_mv(self):
+        yf.tickers
         return self.portfolio_mv
 
 
