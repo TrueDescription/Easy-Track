@@ -9,7 +9,8 @@ class Transaction:
     Class representing a single transaction containing all pertaining information
     """
 
-    def __init__(self, ticker: str, name: str, transaction_identifier: str, date: datetime, shares: float, commission: float,
+    def __init__(self, ticker: str, name: str, transaction_identifier: str, date: datetime, shares: float,
+                 commission: float,
                  notes: str, cost_per_share: float):
         """
 
@@ -28,12 +29,13 @@ class Transaction:
         self.date = date
         self.notes = notes
         self.name = name
+        self.curr_value = 0
         self.ticker = ticker
         self.commission = commission
         self.transaction_identifier = transaction_identifier
 
-    def edit_shares(self, shares: float, cost_per: float, commission: float, date: datetime, transaction_identifier: str,
-                    notes: str):
+    def edit_shares(self, shares: float, cost_per: float, commission: float, date: datetime, transaction_identifier: str
+                    , notes: str):
         self.total_cost = cost_per * shares
         self.shares = shares
         self.date = date
@@ -44,3 +46,6 @@ class Transaction:
         if self.transaction_identifier != transaction_identifier:
             update = True
         self.transaction_identifier = transaction_identifier
+
+    def graph(self):
+        return self.date, self.shares, self
