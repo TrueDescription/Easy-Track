@@ -1,4 +1,19 @@
+import json
+from datetime import datetime
+
+import yfinance as yf
+
 from main import UserData
+import numpy as np
+import matplotlib.pyplot as plt
+
+from position import Position
+from user import User
+import pandas as pd
+
+from google_currency import convert
+
+
 
 
 def compound_calculator(initial: float, regular_addition: float, interval: str, rate: float, c_interval: str,
@@ -42,3 +57,97 @@ def extrapolator(user_data: UserData):
     :return:
     """
     pass
+
+
+def all_asset_grapher(user: User):
+    all_position_graphs = []
+    for ticker in list(user.user_data.positions.keys()):
+        actual_position = user.user_data.positions[ticker]
+        all_position_graphs.append(asset_grapher(actual_position.graph(), actual_position.ticker, actual_position.date))
+
+
+
+    """
+    graph_data = user.graph()
+    points_refined = graph_data[0]
+    info = graph_data[1]
+    print(points_refined)
+    print(info)
+    x = points_refined[0][0]
+    y = points_refined[0][1]
+    i = 1
+    x_final = []
+    y_final = []
+    mk_history = yf.Ticker(points_refined[1]).history(start=points_refined[2])
+    print(mk_history)
+    indexes = list(mk_history.index)
+    curr_shares = y[0]
+    for date in indexes:
+        if date >= x[i]:
+            curr_shares = y[i]
+            i += 1
+        x_final.append(date)
+        y_final.append(curr_shares * mk_history[f'{date.year}-{date.month}-{date.day}'])
+    plt.plot(x_final, y_final)
+    plt.xlabel('Date')
+    plt.ylabel('Market Value')
+    plt.show()
+    """
+
+
+def asset_grapher(points: list, ticker: str, start_date: datetime):
+    print(f'{points} | {ticker} | {start_date}')
+    flag = True
+    if len(points) == 1:
+        flag = False
+    mk_history = yf.Ticker(ticker).history(start=start_date)['Close']
+    print(mk_history)
+    indexes = list(mk_history.index)
+    curr_shares = points[0][1]
+    x = []
+    y = []
+    i = 1
+    for date in indexes:
+        if flag and date >= points[i][0]:
+            curr_shares = points[i][1]
+            i += 1
+        if i >= len(points):
+            flag = False
+        x.append(date)
+        y.append(curr_shares * mk_history[f'{date.year}-{date.month}-{date.day}'])
+
+        #print(curr_shares * mk_history[f'{date.year}-{date.month}-{date.day}'])
+    print(x)
+    print(y)
+    plt.plot(x, y)
+    plt.xlabel('Date')
+    plt.ylabel('Market Value')
+    plt.show()
+    return
+
+
+def convert_currency(currency_from: str, currency_to: str, amount: float) -> float:
+    if currency_from == currency_to:
+        return amount
+    read = json.loads(convert(currency_from, currency_to, amount))
+    return float(read['amount'])
+
+    # plt.plot(x, y)
+    # plt.xlabel('Date')
+    # plt.ylabel('Market Value')
+    # plt.show()
+
+
+if __name__ == '__main__':
+    U = User('Faisal', datetime(2019, 10, 9), 'CAD')
+    U.deposit_cash(1000000, datetime(2019, 10, 9))
+    #  U.make_transaction('msft', 'microsoft', 'buy', datetime(2019, 11, 9), 1000, 0, '', 210)
+    new_p = Position('Microsoft', 'msft', [], 'USD', datetime(2019, 10, 9))
+    new_p2 = Position('Google', 'googl', [], 'USD', datetime(2020, 3, 13))
+    U.buy_security(new_p, 1000, datetime(2019, 10, 9), 0, 210)
+    U.buy_security(new_p2, 250, datetime(2020, 3, 13), 0, 2900)
+    U.buy_security(new_p2, 350, datetime(2020, 5, 13), 0, 2900)
+    # U.update_mv()
+    U.sell_security(U.user_data.positions['msft'], 500, datetime.now(), 0, 300)
+    U.buy_security(new_p, 250, datetime(2020, 10, 9), 0, 300)
+    all_asset_grapher(U)

@@ -22,7 +22,7 @@ class User:
         if ticker in self.user_data.positions.keys():
             self.user_data.positions[ticker].add_transaction(new_t)
             return
-        new_position = Position(name, ticker, [], self.currency)
+        new_position = Position(name, ticker, [], self.currency, date)
         new_position.add_transaction(new_t)
         self.user_data.positions[ticker] = new_position
         self.update_mv()
@@ -63,6 +63,15 @@ class User:
         self.update_mv()
         self.history.append(['sell', position.ticker, date, amount])
 
+    def graph(self):
+        all_points = []
+        info = []
+        for position in self.user_data.positions.values():
+            curr = position.graph()
+            all_points.extend(zip(*curr[0]))
+            info.append((position.ticker, position.date))
+        return all_points, info
+
     def deposit_cash(self, amount: float, date: datetime):
         self.cash += amount
         self.portfolio_mv += amount
@@ -99,7 +108,7 @@ if __name__ == '__main__':
     U.deposit_cash(1000000, datetime(2019, 10, 9))
     print(datetime(2019, 11, 9))
     #  U.make_transaction('msft', 'microsoft', 'buy', datetime(2019, 11, 9), 1000, 0, '', 210)
-    new_p = Position('Microsoft', 'msft', [])
+    new_p = Position('Microsoft', 'msft', [], 'USD', datetime(2019, 10, 9))
     U.buy_security(new_p, 1000, datetime(2019, 10, 9), 0, 210)
     print(U.user_data.positions['msft'].shares)
     U.update_mv()
@@ -116,3 +125,5 @@ if __name__ == '__main__':
     print(U.cash)
     print(U.get_mv())
     print('d')
+    U.buy_security(new_p, 250, datetime(2020, 10, 9), 0, 300)
+    print(U.graph())

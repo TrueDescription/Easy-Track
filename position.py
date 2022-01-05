@@ -7,13 +7,13 @@ import pandas as pd
 
 
 class Position:
-    def __init__(self, name: str, ticker: str, transactions: List[Transaction], native_currency: str):
+    def __init__(self, name: str, ticker: str, transactions: List[Transaction], native_currency: str, date: datetime):
+        self.date = date
         self.native_currency = native_currency
         self.name = name
-        self.transactions = []
+        self.transactions = transactions
         self.ticker = ticker
         self.shares = 0
-        curr_shares = 0
         self.cost = 0
         self.dividends = 0
         self.div_history = {}
@@ -93,17 +93,22 @@ class Position:
             else:
                 data[res[0]] = [res]
         sorted_keys = list(data.keys())
-        sorted_keys.sort(key=lambda x: x[0])
+        sorted_keys.sort()
         points = []
+        summation = 0
+        mkv = get_current_price(self.ticker)
+        ticker = yf.Ticker(self.ticker)
+        mk_history = ticker.history(start=self.date, end=datetime.datetime.now())
         for key in sorted_keys:
             transactions = data[key]
-            summation = 0
             for transaction in transactions:
                 if transaction[2].transaction_identifier == 'buy':
                     summation += transaction[1]
                 elif transaction[2].transaction_identifier == 'sell':
                     summation -= transaction[1]
-            points.append((key, convert_currency(self.currency, self.native_currency, summation)))
+            points.append((key, summation))
+        #print('hello')
+        #print(mk_history['Close'])
         return points
 
 
@@ -112,3 +117,9 @@ def convert_currency(currency_from: str, currency_to: str, amount: float) -> flo
         return amount
     read = json.loads(convert(currency_from, currency_to, amount))
     return float(read['amount'])
+
+
+def get_current_price(symbol) -> float:
+    ticker = yf.Ticker(symbol)
+    todays_data = ticker.history(period='1d')
+    return todays_data['Close'][0]
