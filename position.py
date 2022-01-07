@@ -96,9 +96,9 @@ class Position:
         sorted_keys.sort()
         points = []
         summation = 0
-        mkv = get_current_price(self.ticker)
+        #mkv = get_current_price(self.ticker)
         ticker = yf.Ticker(self.ticker)
-        mk_history = ticker.history(start=self.date, end=datetime.datetime.now())
+        #mk_history = ticker.history(start=self.date, end=datetime.datetime.now())
         for key in sorted_keys:
             transactions = data[key]
             for transaction in transactions:
