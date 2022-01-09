@@ -16,6 +16,60 @@ import pandas as pd
 from google_currency import convert
 
 
+def create_pie_charts(user: User):
+    # Dividends
+    tickers = []
+    amount = []
+    distribution_amounts = []
+    sectors = []
+    sectors_distribution = []
+    industries = []
+    industry_distrubution = []
+    for ticker in user.user_data.positions.keys():
+        ap = user.user_data.positions[ticker]
+        tickers.append(ticker)
+        amount.append(ap.dividends)
+        distribution_amounts.append(convert_currency(ap.currency, user.currency, get_current_price(ticker) * ap.shares))
+        sector = ap.info['sector']
+        if sector in sectors:
+            sectors_distribution[sectors.index(sector)] += ap.cost
+        else:
+            sectors.append(sector)
+            sectors_distribution.append(ap.cost)
+        industry = ap.info['industry']
+        if industry in industries:
+            industry_distrubution[industries.index(industry)] += ap.cost
+        else:
+            industries.append(industry)
+            industry_distrubution.append(ap.cost)
+    if max(amount) != 0:
+        fig1 = plt.figure()
+        ax = fig1.add_axes([0, 0, 1, 1])
+        ax.pie(amount, labels=tickers, autopct='%1.2f%%')
+        plt.show()
+    if len(distribution_amounts) != 0:
+        fig2 = plt.figure()
+        ax2 = fig2.add_axes([0, 0, 1, 1])
+        ax2.pie(distribution_amounts, labels=tickers, autopct='%1.2f%%')
+        plt.show()
+    if len(sectors) != 0:
+        fig3 = plt.figure()
+        ax3 = fig3.add_axes([0, 0, 1, 1])
+        ax3.pie(sectors_distribution, labels=sectors, autopct='%1.2f%%')
+        plt.show()
+    if len(industries) != 0:
+        fig3 = plt.figure()
+        ax3 = fig3.add_axes([0, 0, 1, 1])
+        ax3.pie(industry_distrubution, labels=industries, autopct='%1.2f%%')
+        plt.show()
+
+
+def get_current_price(symbol) -> float:
+    ticker = yf.Ticker(symbol)
+    todays_data = ticker.history(period='1d')
+    return todays_data['Close'][0]
+
+
 def compound_calculator(initial: float, regular_addition: float, interval: str, rate: float, c_interval: str,
                         length: int, graph=True, alpha=1.0, t_interest=0):
     interval_d = {'Weekly': 52, 'Monthly': 12, 'Bi-weekly': 26, 'Yearly': 1, 'Quarterly': 4}
@@ -56,9 +110,9 @@ def compound_calculator(initial: float, regular_addition: float, interval: str, 
                 y_interest.append(total_interest)
                 y_final.append(final)
                 month += 1
-    #print(graph)
+    # print(graph)
     if graph:
-        #print('hellloooooooo')
+        # print('hellloooooooo')
         plt.plot(x_months, y_final)
         plt.plot(x_months, y_interest)
         plt.fill_between(x_months, y_final, alpha=alpha)
@@ -103,7 +157,7 @@ def extrapolator(user: User):
                 big_data[all_x[i]] = [all_y[i], 1]
             if start is not None and all_x[i] > start:
                 big_data[all_x[i]][0] += summation
-                #print(summation)
+                # print(summation)
             elif start is not None and next_date is not None:
                 if next_date <= all_x[i]:
                     k += 1
@@ -178,7 +232,7 @@ def all_asset_grapher(user: User, graph=True):
         plt.ylabel('Market Value')
         plt.legend()
         plt.show()
-    #print([data, div_data])
+    # print([data, div_data])
     return [data, div_data]
 
 
@@ -270,21 +324,21 @@ if __name__ == '__main__':
     new_p = Position('Microsoft', 'msft', [], 'USD', datetime(2020, 5, 9))
     # new_p2 = Position('Google', 'googl', [], 'USD', datetime(2020, 3, 13))
     U.buy_security(new_p, 1000, datetime(2020, 5, 9), 0, 210)
-    new_p3 = Position('Bitcoin', 'BTC-USD', [], 'USD', datetime(2019, 3, 13))
-    U.buy_security(new_p3, 10, datetime(2019, 3, 13), 0, 4000)
+    # new_p3 = Position('Bitcoin', 'BTC-USD', [], 'USD', datetime(2019, 3, 13))
+    # U.buy_security(new_p3, 10, datetime(2019, 3, 13), 0, 4000)
     # U.buy_security(new_p2, 250, datetime(2020, 3, 13), 0, 2900)
     # U.buy_security(new_p2, 1, datetime(2020, 5, 13), 0, 2900)
     # U.update_mv()
-    U.sell_security(U.user_data.positions['msft'], 500, datetime(2021, 12, 13), 0, 300)
-    U.buy_security(new_p, 1000, datetime(2021, 10, 9), 0, 210)
+    # U.sell_security(U.user_data.positions['msft'], 500, datetime(2021, 12, 13), 0, 300)
+    # U.buy_security(new_p, 1000, datetime(2021, 10, 9), 0, 210)
     t3 = time.time()
     print(f'Transaction Times:|{t3 - t2}|')
     # U.buy_security(new_p, 250, datetime(2020, 10, 9), 0, 300)
-    #all_asset_grapher(U)
+    # all_asset_grapher(U)
     t0 = time.time()
-    extrapolator(U)
+    create_pie_charts(U)
     t1 = time.time()
-    print(f'Total Time:|{t1-t0}|')
+    print(f'Total Time:|{t1 - t0}|')
     """
     data = compound_calculator(12500, 1000, 'Monthly', 13, 'Monthly', 5)
     print(data[60])

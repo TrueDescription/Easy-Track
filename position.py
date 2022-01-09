@@ -16,6 +16,7 @@ class Position:
         self.shares = 0
         self.cost = 0
         self.dividends = 0
+        self.info = yf.Ticker(self.ticker).info
         self.div_history = {}
         self.currency = yf.Ticker(ticker).info['currency']
         div_actions = []
