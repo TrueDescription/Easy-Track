@@ -31,6 +31,10 @@ class Position:
             self.transactions = [transaction]
         else:
             self.transactions.append(transaction)
+        if transaction.transaction_identifier == 'call':
+            pass
+        elif transaction.transaction_identifier == 'put':
+            pass
         if transaction.transaction_identifier == 'buy':
             self.shares += transaction.shares
             self.cost += transaction.cost_per_share * transaction.shares

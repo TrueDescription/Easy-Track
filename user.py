@@ -3,6 +3,8 @@ import yfinance as yf
 from google_currency import convert
 import json
 
+from option_transaction import OptionTransaction
+
 
 class User:
     """
@@ -34,7 +36,7 @@ class User:
         new_position.add_transaction(new_t)
         self.user_data.positions[ticker] = new_position
         self.update_mv()
-        #self.mv_history[date] = self.portfolio_mv
+        # self.mv_history[date] = self.portfolio_mv
         return new_t
 
     def remove_transaction(self, transaction: Transaction):
@@ -49,7 +51,7 @@ class User:
         for key in self.user_data.positions:
             pass
 
-    def update_mv(self, date=None, his_up=False):
+    def update_mv(self):
         new_mv = 0
         dividends = 0
         for position in self.user_data.positions.values():
@@ -58,23 +60,58 @@ class User:
             dividends += position.dividends
         self.dividends = dividends
         self.portfolio_mv = new_mv + self.cash
-        #self.mv_history[date] = self.portfolio_mv
+        # self.mv_history[date] = self.portfolio_mv
 
     def buy_security(self, position: Position, amount: float, date: datetime, commission: float, cost_per_share: float,
                      notes=''):
         self.history.append(['buy', position.ticker, date, amount])
         self.make_transaction(position.ticker, position.name, 'buy', date, amount, commission, notes, cost_per_share)
         self.cash -= convert_currency(position.currency, self.currency, amount * cost_per_share)
-        #self.update_mv()
+        # self.update_mv()
 
     def sell_security(self, position: Position, amount: float, date: datetime, commission: float, cost_per_share: float,
                       notes=''):
-        if position.shares == 0:
-            self.user_data.curr_investments.remove(position)
         self.cash += convert_currency(position.currency, self.currency, amount * cost_per_share)
         self.make_transaction(position.ticker, position.name, 'sell', date, amount, commission, notes, cost_per_share)
-        #self.update_mv()
+        if position.shares == 0:
+            self.user_data.curr_investments.remove(position)
+        # self.update_mv()
         self.history.append(['sell', position.ticker, date, amount])
+
+    def buy_option(self, position: Position, amount: float, date: datetime, commission: float, cost_per_share: float,
+                   strike_price: float, premium: float, c_or_p: str, notes=''):
+        self.history.append([f'buy {c_or_p}', position.ticker, date, amount])
+        self.make_transaction_option(position.ticker + f' {c_or_p}', position.name, c_or_p, date, amount, commission,
+                                     notes,
+                                     premium * 100)
+        self.cash -= convert_currency(position.currency, self.currency, premium * 100)
+
+    def make_transaction_option(self, ticker: str, name: str, transaction_identifier: str, date: datetime,
+                                contract_amounts: int, commission: float, break_even: float
+                                , notes: str, premium: float, expiry_date: datetime, strike_price: float):
+        new_t = OptionTransaction(ticker, name, transaction_identifier, date, contract_amounts, commission, notes,
+                                  premium, break_even, expiry_date, strike_price)
+        if ticker in self.user_data.positions.keys():
+            self.user_data.positions[ticker].add_transaction(new_t)
+            self.update_mv()
+            """if date in self.mv_history.keys():
+                self.mv_history[date] += 
+            else:
+                self.mv_history[date] = self.portfolio_mv"""
+            return
+        new_position = Position(name, ticker, [], self.currency, date)
+        new_position.add_transaction(new_t)
+        self.user_data.positions[ticker] = new_position
+        self.update_mv()
+        # self.mv_history[date] = self.portfolio_mv
+        return new_t
+
+    def exercise_option(self, position: Position, amount: float, date: datetime, commission: float,
+                        cost_per_share: float, strike_price: float, premium: float, c_or_p: str, notes=''):
+        pass
+
+    def sell_option(self):
+        pass
 
     def graph(self):
         all_points = []
@@ -90,14 +127,14 @@ class User:
         self.portfolio_mv += amount
         self.total_deposits += amount
         self.history.append(['deposit', self.currency, date, amount])
-        #self.mv_history[date] = self.portfolio_mv
+        # self.mv_history[date] = self.portfolio_mv
 
     def withdraw_cash(self, amount: float, date: datetime):
         self.cash -= amount
         self.portfolio_mv -= amount
         self.total_deposits -= amount
         self.history.append(['withdraw', self.currency, date, amount])
-        #self.mv_history[date] = self.portfolio_mv
+        # self.mv_history[date] = self.portfolio_mv
 
     def get_cash(self):
         return self.cash + self.dividends
