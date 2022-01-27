@@ -1,13 +1,16 @@
 import json
 from typing import List
 
+from option_transaction import OptionTransaction
 from transaction import *
 import datetime
 import pandas as pd
 
 
 class Position:
-    def __init__(self, name: str, ticker: str, transactions: List[Transaction], native_currency: str, date: datetime):
+    def __init__(self, name: str, ticker: str, transactions: List[Transaction], native_currency: str, date: datetime,
+                 option=False):
+        self.option = option
         self.date = date
         self.native_currency = native_currency
         self.name = name
@@ -31,10 +34,9 @@ class Position:
             self.transactions = [transaction]
         else:
             self.transactions.append(transaction)
-        if transaction.transaction_identifier == 'call':
-            pass
-        elif transaction.transaction_identifier == 'put':
-            pass
+        if type(transaction) == OptionTransaction:
+            self.add_transaction_option(transaction, transaction.transaction_identifier)
+            return
         if transaction.transaction_identifier == 'buy':
             self.shares += transaction.shares
             self.cost += transaction.cost_per_share * transaction.shares
@@ -51,6 +53,10 @@ class Position:
         if flag:
             self.dividends_updater()
 
+    def add_transaction_option(self, transaction: OptionTransaction, transaction_identifier: str):
+        self.shares += transaction.contract_amount * 100
+        self.cost += self.shares * transaction.premium_per_share
+
     def remove_transaction(self, transaction):
         self.transactions.remove(transaction)
         self.dividends_updater()
@@ -63,6 +69,8 @@ class Position:
         return
 
     def dividends_updater(self):
+        if self.option:
+            return
         if not self.transactions:
             return
         history = yf.Ticker(self.ticker)
@@ -93,6 +101,8 @@ class Position:
         data = {}
         for transaction in self.transactions:
             res = transaction.graph()
+            if isinstance(transaction, OptionTransaction):
+                pass
             if res[0] in data.keys():
                 data[res[0]].append(res)
             else:
@@ -101,9 +111,7 @@ class Position:
         sorted_keys.sort()
         points = []
         summation = 0
-        #mkv = get_current_price(self.ticker)
-        ticker = yf.Ticker(self.ticker)
-        #mk_history = ticker.history(start=self.date, end=datetime.datetime.now())
+        #ticker = yf.Ticker(self.ticker)
         for key in sorted_keys:
             transactions = data[key]
             for transaction in transactions:
@@ -112,9 +120,9 @@ class Position:
                 elif transaction[2].transaction_identifier == 'sell':
                     summation -= transaction[1]
             points.append((key, summation))
-        #print('hello')
-        #print(mk_history['Close'])
         return points
+
+
 
 
 def convert_currency(currency_from: str, currency_to: str, amount: float) -> float:

@@ -55,6 +55,10 @@ class User:
         new_mv = 0
         dividends = 0
         for position in self.user_data.positions.values():
+            if position.option:
+                new_mv += convert_currency(position.currency, self.currency,
+                                           (position.shares * get_current_price(position.ticker)) + position.dividends)
+                continue
             new_mv += convert_currency(position.currency, self.currency,
                                        (position.shares * get_current_price(position.ticker)) + position.dividends)
             dividends += position.dividends

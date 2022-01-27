@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.stats import norm
+from yahoo_fin import options
 
 
 def d(sigma, S, K, r, t):
