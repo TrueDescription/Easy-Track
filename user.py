@@ -2,6 +2,10 @@ from main import *
 import yfinance as yf
 from google_currency import convert
 import json
+import datetime
+from transaction import Transaction
+from position import Position
+#from main import UserData
 
 from option_transaction import OptionTransaction
 
@@ -12,7 +16,7 @@ class User:
     """
 
     def __init__(self, username: str, start_date: datetime, currency: str):
-        self.user_data = UserData(username, start_date)
+        #self.user_data = UserData(username, start_date)
         self.portfolio_mv = 0
         self.cash = 0
         self.total_deposits = 0

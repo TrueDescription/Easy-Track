@@ -23,6 +23,7 @@ class UserData:
         self.curr_investments = []  # Current open positions
         self.currency = 'cad'
         # Pull file data
+        """
         try:
             user_file = open(username + 'data.txt', 'x')
             user_file.write('symbol, name, type, date, shares, commission, notes, current value, notes, cost_per_share')
@@ -42,3 +43,4 @@ class UserData:
             self.positions[key].dividends_updater()
             if self.positions[key].shares > 0:
                 self.curr_investments.append(self.positions[key])
+        """
