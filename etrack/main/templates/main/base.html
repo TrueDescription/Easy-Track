@@ -9,17 +9,25 @@
 
     <title>Raven</title>
 
-    <nav class="navbar navbar-light" style="background-color: #5C6BC0">
+    <nav class="navbar navbar-light">
           <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-              <img src="https://www.freeiconspng.com/thumbs/raven-png/raven-png-photo-10.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
+            <a class="navbar-brand" href="#" onclick="location.href='http://127.0.0.1:8000/'">
+              <img src="https://www.freeiconspng.com/thumbs/raven-png/raven-png-photo-10.png" alt="RavenSight Icon" width="30" height="24" class="d-inline-block align-text-top"
+              data-href-template="homepage.html" onclick="location.href='http://127.0.0.1:8000/'">
               RavenSight
             </a>
+
               <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search Ticker eg. 'MSFT'" aria-label="Search">
-              <button class="btn btn-dark" type="submit" style="outline-color: #2196F3">Search</button>
+              <input class="form-control me-2" type="search" placeholder="Search Ticker eg.'MSFT'" aria-label="Search">
+              <button class="btn btn-primary" type="submit" style="outline-color: #2196F3">Search</button>
             </form>
+              <a>
+                  <!--<button class="btn btn-primary" type="submit" style="outline-color: #2196F3" onclick="location.href='http://127.0.0.1:8000/'" >Home</button> -->
+                  <button class="btn btn-primary" type="submit" style="outline-color: #2196F3">Portfolio's</button>
+              </a>
+
           </div>
+
     </nav>
 </head>
 <body>
@@ -28,5 +36,55 @@
 
     {% endblock %}
 
+
+
   </body>
+
+<div class="b-example-divider"></div>
+
+<div class="container">
+  <footer class="row row-cols-5 py-5 my-5 border-top">
+    <div class="col">
+      <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
+        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+      </a>
+      <p class="text-muted">&copy; 2021</p>
+    </div>
+
+    <div class="col">
+
+    </div>
+
+    <div class="col">
+      <h5>Navigation</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Login/Register</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Portfolio</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Watchlist's</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Markets</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Stock Screener</a></li>
+      </ul>
+    </div>
+
+      <div class="col">
+      <h5>Investment Resources</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="https://www.getsmarteraboutmoney.ca/calculators/compound-interest-calculator/" class="nav-link p-0 text-muted" target=”_blank”>Compound Calculator</a></li>
+        <li class="nav-item mb-2"><a href="https://www.investopedia.com/" class="nav-link p-0 text-muted" target=”_blank”>Investopedia</a></li>
+        <li class="nav-item mb-2"><a href="https://www.reddit.com/r/wallstreetbets/" class="nav-link p-0 text-muted target=”_blank”" target=”_blank”>r/wallstreetbets</a></li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <h5>About Me</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="https://www.linkedin.com/in/masalhafaisal/" class="nav-link p-0 text-muted" target=”_blank”>Linkedin</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted" target=”_blank”>Portfolio</a></li>
+      </ul>
+    </div>
+
+
+  </footer>
+</div>
 </html>

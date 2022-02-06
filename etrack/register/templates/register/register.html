@@ -7,7 +7,73 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <form method="post" class="form-group">
+ <!-- Bootstrap core CSS -->
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <style>
+      html,
+body {
+  height: 100%;
+}
+
+body {
+
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-signin .checkbox {
+  font-weight: 400;
+}
+
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+    </style>
+    <form method="post" class="form-signin">
+        <img class="center" src="https://www.freeiconspng.com/thumbs/raven-png/raven-png-photo-10.png" alt="" width="72" height="57">
+        <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
         {% csrf_token %}
         {{ form|crispy }}
         <button type="submit" class="btn btn-success">Register</button>
