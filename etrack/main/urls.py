@@ -1,6 +1,7 @@
 from django.urls import path
+
 from . import views
-from etrack.register import views as v
+from register import views as v
 
 
 urlpatterns = [
