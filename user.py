@@ -31,10 +31,6 @@ class User:
         if ticker in self.user_data.positions.keys():
             self.user_data.positions[ticker].add_transaction(new_t)
             self.update_mv()
-            """if date in self.mv_history.keys():
-                self.mv_history[date] += 
-            else:
-                self.mv_history[date] = self.portfolio_mv"""
             return
         new_position = Position(name, ticker, [], self.currency, date)
         new_position.add_transaction(new_t)

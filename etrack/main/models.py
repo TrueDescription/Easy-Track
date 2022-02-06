@@ -1,9 +1,4 @@
 from django.db import models
-import sys
-import datetime
-
-sys.path.insert(0, 'C:/Users/faisa/PycharmProjects/Easy-Track')
-from user import User
 
 
 # Create your models here.
@@ -26,12 +21,14 @@ class Item(models.Model):
 
 
 class UserModel(models.Model):
-    user_id = models.CharField(max_length=200)
+    user_id = models.CharField(max_length=100)
+    portfolio_mv = models.IntegerField()
+    cash = models.IntegerField()
+    total_deposits = models.IntegerField()
+    dividends = models.IntegerField()
+    history = models.JSONField()
+    mv_history = models.JSONField()
     currency = models.CharField(max_length=3)
-    #user_object = models.AutoField()
-    user_object = User(str(user_id), datetime.datetime.now(), str(currency))
-    #user_object
-
 
     def __str__(self):
         return self.user_id
