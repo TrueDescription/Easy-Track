@@ -21,4 +21,4 @@ def login(response):
 
 def logoutUser(response):
     logout(response)
-    return redirect('login')
+    return redirect('login/')

@@ -121,9 +121,13 @@
        </h2>
 
        <!-- <button type="button" class="hero-button" onclick="location.href='tours.html'"> -->
+        {% if user.is_authenticated %}
+            <button type="button" class="btn btn-primary btn-lg" onclick="location.href='portfolio/'"> View Portfolio's </button>
+        {% else %}
         <button type="button" class="btn btn-primary btn-lg" onclick="location.href='login/'">
-            Log in now &raquo;
+            Log in now
         </button>
+        {% endif %}
 
 
 

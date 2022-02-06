@@ -7,27 +7,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+
     <title>Raven</title>
 
+    <style>
+        ul {
+              list-style-type: none;
+              margin: 0;
+              padding: 0;
+
+            }
+        li {
+              float: left;
+            }
+        .navbar-nav {
+                position: sticky;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 30px;
+                top: 0;
+        }
+
+
+    </style>
+
     <nav class="navbar navbar-light">
-          <div class="container-fluid">
-            <a class="navbar-brand" href="#" onclick="location.href='http://127.0.0.1:8000/'">
+        <ul style="float:right">
+            <li>
+                <a class="navbar-brand" href="#" onclick="location.href='http://127.0.0.1:8000/'">
               <img src="https://www.freeiconspng.com/thumbs/raven-png/raven-png-photo-10.png" alt="RavenSight Icon" width="30" height="24" class="d-inline-block align-text-top"
               data-href-template="homepage.html" onclick="location.href='http://127.0.0.1:8000/'">
               RavenSight
             </a>
-
+            </li>
+            <li>
+                <a>
               <form class="d-flex">
               <input class="form-control me-2" type="search" placeholder="Search Ticker eg.'MSFT'" aria-label="Search">
               <button class="btn btn-primary" type="submit" style="outline-color: #2196F3">Search</button>
             </form>
-              <a>
-                  <!--<button class="btn btn-primary" type="submit" style="outline-color: #2196F3" onclick="location.href='http://127.0.0.1:8000/'" >Home</button> -->
-                  <button class="btn btn-primary" type="submit" style="outline-color: #2196F3">Portfolio's</button>
-              </a>
-
-          </div>
-
+                </a>
+            </li>
+        </ul>
+        <ul>
+            {% if user.is_authenticated %}
+            <li>
+                   <a class="active">  <h3>Hello, {{request.user}}</h3>  </a>
+            </li>
+            <li>
+                <a class="active"><button class="btn btn-primary" type="submit" style="margin-left:10px">Portfolio's</button></a>
+            </li>
+            <li>
+                <a class="active"><button class="btn btn-primary" type="submit" style="margin-left:10px" onclick="location.href='logout/'">Log Out</button> </a>
+            </li>
+            {% endif %}
+        </ul>
     </nav>
 </head>
 <body>
