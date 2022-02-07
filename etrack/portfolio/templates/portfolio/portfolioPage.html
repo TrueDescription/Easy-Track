@@ -75,6 +75,12 @@
       cursor: pointer;
       border-radius: .5rem;
     }
+    .list-group-item  {
+        min-width: 500px;
+        min-height:120px;
+
+    }
+
     .list-group-item-check {
       position: absolute;
       clip: rect(0, 0, 0, 0);
@@ -112,6 +118,11 @@
       label {
         width:500px
 
+      }
+
+      .noHover:hover, .noHover:active{
+        background:#FFFFFF;
+        width:10px
       }
 
       body {
@@ -205,17 +216,39 @@ main {
 .lh-tight { line-height: 1.25; }
 
 .chunck {
-margin-left: 75px;
+margin-left: 0px;
 }
 
 .inbetween {
     margin-bottom: 10px;
 }
 
+.vertical-alignment-helper {
+    display:table;
+    height: 100%;
+    width: 100%;
+    pointer-events:none; /* This makes sure that we can still click outside of the modal to close it */
+}
+.vertical-align-center {
+    /* To center vertically */
+    display: table-cell;
+    vertical-align: middle;
+    pointer-events:none;
+}
+.modal-content {
+    /* Bootstrap sets the size of the modal in the modal-dialog class, we need to inherit it */
+    width:inherit;
+    max-width:inherit; /* For Bootstrap 4 - to avoid the modal window stretching full width */
+    height:inherit;
+    /* To center horizontally */
+    margin: 0 auto;
+    pointer-events: all;
+}
+
+
 
 </style>
 <section class="border-top">
-
     <div class="center">
         <ul class="flowdown">
             <li>
@@ -238,7 +271,40 @@ margin-left: 75px;
                         <h4> Portfolio's </h4>
                     </li>
                     <li style="padding-left:20px;">
-                        <button type="button" class="btn btn-primary btn-sm">+ add</button>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">+ add</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="vertical-alignment-helper">
+                                <div class="modal-dialog vertical-align-center">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel">Add Portfolio</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="form-floating">
+                                                    <label for="floatingInput" class="noHover">Name</label>
+                                                    <input class="form-control" id="floatingInput" placeholder="My Portfolio" name="name">
+                                                </div>
+                                                <div class="form-floating">
+                                                    <label class="noHover" style="margin-top:5px;">Currency</label>
+                                                    <select class="form-control" aria-label="Default select example">
+                                                      <option selected>Open this select menu</option>
+                                                      <option value="1">Cad</option>
+                                                      <option value="2">Usd</option>
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </li>
 
                 </ul>
@@ -248,33 +314,66 @@ margin-left: 75px;
                 <!-- This is the container containing portfolios and watchlist from left to right -->
                 <div>
                     <ul>
-                        <li>
+                        <li style="margin-right:150px;">
                             <div class="list-group list-group-checkable">
                                 <ul style="margin-top:-50px;">
-                                    <li class="inbetween" >
-                                        <input type="hidden" id="listGroupCheckableRadios1" name="listGroupCheckableRadios" value="" disabled/>
-                                        <label class="list-group-item py-3" for="listGroupCheckableRadios1">
-                                            <p> Portoflio 1 </p>
-                                        <span class="d-block small opacity-50">With support text underneath to add more detail</span>
-                                        </label>
-                                    </li>
-                                    <li class="inbetween">
-                                        <input type="hidden" id="listGroupCheckableRadios2" name="listGroupCheckableRadios" value="" disabled/>
-                                    <label class="list-group-item py-3" for="listGroupCheckableRadios2">
-                                        <p> Portoflio 2 </p>
-                                    <span class="d-block small opacity-50">With support text underneath to add more detail</span>
-                                    </label>
-                                    </li>
+                                    {% for pf in user.portfolio.all %}
+                                        <li class="inbetween">
+                                            <input type="hidden" id="listGroupCheckableRadios3" name="listGroupCheckableRadios" value="" disabled/>
+                                            <label class="list-group-item py-3" for="listGroupCheckableRadios5">
+                                                <p> {{pf.name}} </p>
+                                                <div>
+                                                    <ul>
+                                                        <li>
+                                                            <span class="d-block small opacity-50">Balance</span>
+                                                            <span class="d-block">${{pf.balance}}</span>
+                                                        </li>
+                                                        <li style="margin-left:330px;">
+                                                            <span class="d-block small opacity-50">Performance</span>
+                                                            <span class="d-block" style="color:green">+133.79%</span>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+
+                                            </label>
+                                        </li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </li>
                         <li class="chunck">
                             <!--Watchlist goes here-->
                             <div class="list-group" style="margin-top:-55px;">
-                                <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none" style="margin-left:-45px;">
+                                <a class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none" style="margin-left:-45px;">
                               <svg class="bi me-2" width="30" height="24"></svg>
                               <span class="fs-5 fw-semibold"><h4>Watchlist</h4></span>
-                                    <button type="button" class="btn btn-primary btn-sm" style="margin-left:20px;">Manage</button>
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-primary btn-sm" style="margin-left:20px;" data-bs-toggle="modal" data-bs-target="#myWatchlist">Manage</button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="myWatchlist" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="vertical-alignment-helper">
+                                            <div class="modal-dialog vertical-align-center">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="myModalLabel2">Add Watch Item</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form>
+                                                            <div class="form-floating">
+                                                                <label for="floatingInput" class="noHover">Ticker</label>
+                                                                <input class="form-control" id="floatingInput3" placeholder="eg.'MSFT'" name="name">
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                             </a>
                               <a href="#" class="list-group-item list-group-item-action" aria-current="true">
                                 <div class="d-flex w-100 justify-content-between">
@@ -309,5 +408,8 @@ margin-left: 75px;
     </div>
 
 </section>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 
 {% endblock %}
