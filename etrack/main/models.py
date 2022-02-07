@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
+"""
 class ToDoList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) # this will make sure that all to do lists are under some user
     name = models.CharField(max_length=200)
@@ -34,3 +35,4 @@ class UserModel(models.Model):
 
     def __str__(self):
         return self.user_id
+"""

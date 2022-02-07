@@ -1,2 +1,313 @@
 <!DOCTYPE html>
 {% extends 'main/base.html'%}
+<head>
+
+</head>
+
+
+{% block content %}
+<style>
+    .section4 {
+        height: 10em;
+        position: relative
+    }
+    .center {
+          margin: auto;
+          width: 50%;
+          padding: 10px;
+        }
+    .container {
+        height: 10em;
+        position: relative
+        margin-bottom: 50px
+    }
+    .align-content {
+        justify-content: center;
+        align-content: center;
+    }
+    .flowdown {
+    display: flex;
+    flex-flow: column wrap;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-top: 50px;
+    }
+    .b-example-divider {
+      height: 3rem;
+      background-color: rgba(0, 0, 0, .1);
+      border: solid rgba(0, 0, 0, .15);
+      border-width: 1px 0;
+      box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+    }
+
+    .bi {
+      vertical-align: -.125em;
+      fill: currentColor;
+    }
+
+    .opacity-50 { opacity: .5; }
+    .opacity-75 { opacity: .75; }
+
+    .list-group {
+      width: auto;
+      max-width: 460px;
+      margin: 4rem auto;
+    }
+
+    .form-check-input:checked + .form-checked-content {
+      opacity: .5;
+    }
+
+    .form-check-input-placeholder {
+      pointer-events: none;
+      border-style: dashed;
+    }
+    [contenteditable]:focus {
+      outline: 0;
+    }
+
+    .list-group-checkable {
+      display: grid;
+      gap: .5rem;
+      border: 0;
+    }
+    .list-group-checkable .list-group-item {
+      cursor: pointer;
+      border-radius: .5rem;
+    }
+    .list-group-item-check {
+      position: absolute;
+      clip: rect(0, 0, 0, 0);
+      pointer-events: none;
+    }
+    .list-group-item-check:hover + .list-group-item {
+      background-color: var(--bs-light);
+    }
+    .list-group-item-check:checked + .list-group-item {
+      color: #fff;
+      background-color: var(--bs-blue);
+    }
+    .list-group-item-check[disabled] + .list-group-item,
+    .list-group-item-check:disabled + .list-group-item {
+      pointer-events: none;
+      filter: none;
+      opacity: .5;
+    }
+          .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+     label:hover, label:active{
+        background:#007bff;
+        }
+      label {
+        width:500px
+
+      }
+
+      body {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+
+html {
+  height: -webkit-fill-available;
+}
+
+main {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 100vh;
+  height: -webkit-fill-available;
+  max-height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.b-example-divider {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, .1);
+  border: solid rgba(0, 0, 0, .15);
+  border-width: 1px 0;
+  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
+
+.bi {
+  vertical-align: -.125em;
+  pointer-events: none;
+  fill: currentColor;
+}
+
+.dropdown-toggle { outline: 0; }
+
+.nav-flush .nav-link {
+  border-radius: 0;
+}
+
+.btn-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: .25rem .5rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, .65);
+  background-color: transparent;
+  border: 0;
+}
+.btn-toggle:hover,
+.btn-toggle:focus {
+  color: rgba(0, 0, 0, .85);
+  background-color: #d2f4ea;
+}
+
+.btn-toggle::before {
+  width: 1.25em;
+  line-height: 0;
+  content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+  transition: transform .35s ease;
+  transform-origin: .5em 50%;
+}
+
+.btn-toggle[aria-expanded="true"] {
+  color: rgba(0, 0, 0, .85);
+}
+.btn-toggle[aria-expanded="true"]::before {
+  transform: rotate(90deg);
+}
+
+.btn-toggle-nav a {
+  display: inline-flex;
+  padding: .1875rem .5rem;
+  margin-top: .125rem;
+  margin-left: 1.25rem;
+  text-decoration: none;
+}
+.btn-toggle-nav a:hover,
+.btn-toggle-nav a:focus {
+  background-color: #d2f4ea;
+}
+
+.scrollarea {
+  overflow-y: auto;
+}
+
+.fw-semibold { font-weight: 600; }
+.lh-tight { line-height: 1.25; }
+
+.chunck {
+margin-left: 75px;
+}
+
+.inbetween {
+    margin-bottom: 10px;
+}
+
+
+</style>
+<section class="border-top">
+
+    <div class="center">
+        <ul class="flowdown">
+            <li>
+                <!-- This is the container containing Welcome msg and balance from left to right -->
+                <div>
+                    <ul class="flowdown">
+                        <li>
+                            <h3>Welcome back. You have</h3>
+                        </li>
+                        <li>
+                            <h2>$13,546.63 </h2> <h5>CAD</h5>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li style="margin-top:50px;">
+                <ul>
+                    <li>
+                        <h4> Portfolio's </h4>
+                    </li>
+                    <li style="padding-left:20px;">
+                        <button type="button" class="btn btn-primary btn-sm">+ add</button>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                <!-- This is the container containing portfolios and watchlist from left to right -->
+                <div>
+                    <ul>
+                        <li>
+                            <div class="list-group list-group-checkable">
+                                <ul style="margin-top:-50px;">
+                                    <li class="inbetween" >
+                                        <input type="hidden" id="listGroupCheckableRadios1" name="listGroupCheckableRadios" value="" disabled/>
+                                        <label class="list-group-item py-3" for="listGroupCheckableRadios1">
+                                            <p> Portoflio 1 </p>
+                                        <span class="d-block small opacity-50">With support text underneath to add more detail</span>
+                                        </label>
+                                    </li>
+                                    <li class="inbetween">
+                                        <input type="hidden" id="listGroupCheckableRadios2" name="listGroupCheckableRadios" value="" disabled/>
+                                    <label class="list-group-item py-3" for="listGroupCheckableRadios2">
+                                        <p> Portoflio 2 </p>
+                                    <span class="d-block small opacity-50">With support text underneath to add more detail</span>
+                                    </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="chunck">
+                            <!--Watchlist goes here-->
+                            <div class="list-group" style="margin-top:-55px;">
+                                <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none" style="margin-left:-45px;">
+                              <svg class="bi me-2" width="30" height="24"></svg>
+                              <span class="fs-5 fw-semibold"><h4>Watchlist</h4></span>
+                                    <button type="button" class="btn btn-primary btn-sm" style="margin-left:20px;">Manage</button>
+                            </a>
+                              <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                                <div class="d-flex w-100 justify-content-between">
+                                  <h5 class="mb-1">AAPL</h5>
+                                  <small>$172.39</small>
+                                </div>
+                                <p class="mb-1">Some placeholder content in a paragraph.</p>
+                                <small>Apple Inc.</small>
+                              </a>
+                              <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                  <h5 class="mb-1">List group item heading</h5>
+                                  <small class="text-muted">3 days ago</small>
+                                </div>
+                                <p class="mb-1">Some placeholder content in a paragraph.</p>
+                                <small class="text-muted">And some muted small print.</small>
+                              </a>
+                              <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                  <h5 class="mb-1">List group item heading</h5>
+                                  <small class="text-muted">3 days ago</small>
+                                </div>
+                                <p class="mb-1">Some placeholder content in a paragraph.</p>
+                                <small class="text-muted">And some muted small print.</small>
+                              </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</section>
+
+{% endblock %}

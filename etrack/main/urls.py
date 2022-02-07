@@ -7,7 +7,7 @@ from portfolio import views as pv
 
 
 urlpatterns = [
-    path('<int:id>', views.index, name='index'),
+#    path('<int:id>', views.index, name='index'),
     path('', views.home, name='home'),
     path('register/', v.register, name='register'),
     path('login/', logv.login, name='login'),
