@@ -282,24 +282,29 @@ margin-left: 0px;
                                             <h4 class="modal-title" id="myModalLabel">Add Portfolio</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <form>
+                                            <form method="post" class="form-group" action="">
+                                                {% csrf_token %}
                                                 <div class="form-floating">
                                                     <label for="floatingInput" class="noHover">Name</label>
-                                                    <input class="form-control" id="floatingInput" placeholder="My Portfolio" name="name">
+                                                    <input class="form-control" id="floatingInput" placeholder="My Portfolio" name="name" type="text" required minlength="1">
                                                 </div>
                                                 <div class="form-floating">
                                                     <label class="noHover" style="margin-top:5px;">Currency</label>
-                                                    <select class="form-control" aria-label="Default select example">
-                                                      <option selected>Open this select menu</option>
+                                                    <select class="form-control" aria-label="Default select example" name="currency" required >
+                                                      <option value="">Select Currency</option>
                                                       <option value="1">Cad</option>
                                                       <option value="2">Usd</option>
                                                     </select>
                                                 </div>
+                                                <div>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary" name="savep">Save changes</button>
+                                                </div>
                                             </form>
+
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
+
                                         </div>
                                     </div>
                                 </div>
@@ -359,46 +364,34 @@ margin-left: 0px;
                                                         <h4 class="modal-title" id="myModalLabel2">Add Watch Item</h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form>
+                                                        <form method="post" class="form-group">
+                                                            {% csrf_token %}
                                                             <div class="form-floating">
                                                                 <label for="floatingInput" class="noHover">Ticker</label>
                                                                 <input class="form-control" id="floatingInput3" placeholder="eg.'MSFT'" name="name">
                                                             </div>
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary" name="savew" value="savew">Save changes</button>
                                                         </form>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary">Save changes</button>
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                             </a>
-                              <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                                <div class="d-flex w-100 justify-content-between">
-                                  <h5 class="mb-1">AAPL</h5>
-                                  <small>$172.39</small>
-                                </div>
-                                <p class="mb-1">Some placeholder content in a paragraph.</p>
-                                <small>Apple Inc.</small>
-                              </a>
-                              <a href="#" class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between">
-                                  <h5 class="mb-1">List group item heading</h5>
-                                  <small class="text-muted">3 days ago</small>
-                                </div>
-                                <p class="mb-1">Some placeholder content in a paragraph.</p>
-                                <small class="text-muted">And some muted small print.</small>
-                              </a>
-                              <a href="#" class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between">
-                                  <h5 class="mb-1">List group item heading</h5>
-                                  <small class="text-muted">3 days ago</small>
-                                </div>
-                                <p class="mb-1">Some placeholder content in a paragraph.</p>
-                                <small class="text-muted">And some muted small print.</small>
-                              </a>
+                                {% for pf in user.WatchItem.all %}
+                                  <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                                    <div class="d-flex w-100 justify-content-between">
+                                      <h5 class="mb-1">{{pf.ticker}}</h5>
+                                      <small>$172.39</small>
+                                    </div>
+                                    <p class="mb-1">Some placeholder content in a paragraph.</p>
+                                    <small>Apple Inc.</small>
+                                  </a>
+                                {% endfor %}
                             </div>
                         </li>
                     </ul>

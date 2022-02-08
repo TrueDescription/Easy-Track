@@ -13,9 +13,12 @@ class Portfolio(models.Model):
     def __str__(self):
         return self.name
 
+    def drop(self):
+        self.balance -= 100
+
 
 class Position(models.Model):
-    Portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+    Portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, related_name='position', null=True)
     ticker = models.CharField(max_length=5)
     name = models.CharField(max_length=100, default='')
     shares = models.IntegerField()
@@ -27,7 +30,7 @@ class Position(models.Model):
 
 
 class Transaction(models.Model):
-    Position = models.ForeignKey(Position, on_delete=models.CASCADE)
+    Position = models.ForeignKey(Position, on_delete=models.CASCADE, related_name='transaction', null=True)
     name = models.CharField(max_length=100, default='')
     ticker = models.CharField(max_length=5)
     shares = models.IntegerField()
@@ -39,7 +42,7 @@ class Transaction(models.Model):
 
 
 class Watchlist(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='watchlist', null=True)
     name = models.CharField(max_length=100, default='')
 
     def __str__(self):
@@ -47,8 +50,8 @@ class Watchlist(models.Model):
 
 
 class WatchItem(models.Model):
-    name = models.CharField(max_length=100, default='')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='WatchItem', null=True)
     ticker = models.CharField(max_length=5)
 
     def __str__(self):
-        return self.name
+        return self.ticker
