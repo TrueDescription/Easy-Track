@@ -18,8 +18,8 @@
         }
     .container {
         height: 10em;
-        position: relative
-        margin-bottom: 50px
+        position: relative;
+        margin-bottom: 50px;
     }
     .align-content {
         justify-content: center;
@@ -259,7 +259,9 @@ margin-left: 0px;
                             <h3>Welcome back. You have</h3>
                         </li>
                         <li>
-                            <h2>$13,546.63 </h2> <h5>CAD</h5>
+                            
+                            <h2>${{total}}</h2> <h5>CAD</h5>
+                            
                         </li>
                     </ul>
                 </div>
@@ -272,7 +274,42 @@ margin-left: 0px;
                     </li>
                     <li style="padding-left:20px;">
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">+ add</button>
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">+ Add</button>
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#delete">Delete</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                          <div class="vertical-alignment-helper">
+                              <div class="modal-dialog vertical-align-center">
+                                  <div class="modal-content">
+                                      <div class="modal-header">
+                                          <h4 class="modal-title" id="myModalLabel">Delete Portfolio</h4>
+                                      </div>
+                                      <div class="modal-body">
+                                          <form method="post" class="form-group" action="">
+                                              {% csrf_token %}
+                                              <div class="form-floating">
+                                                  <h5></h5>
+                                                  <select class="form-control" aria-label="Default select example" name="deletepf">
+                                                    <option value="">Select Portfolio</option>
+                                                    {% for pf in user.portfolio.all %}
+                                                    <option>{{pf.name}}</option>
+                                                    {% endfor %}
+                                                  </select>
+                                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                  <button type="submit" class="btn btn-danger" name="deletepf" value="deletepf">Confirm Delete</button>
+                                              </div>
+                                              <div>
+                                              </div>
+                                          </form>
+
+                                      </div>
+                                      <div class="modal-footer">
+
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
                         <!-- Modal -->
                         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="vertical-alignment-helper">
@@ -327,11 +364,23 @@ margin-left: 0px;
                                             <input type="hidden" id="listGroupCheckableRadios3" name="listGroupCheckableRadios" value="" disabled/>
                                             <label class="list-group-item py-3" for="listGroupCheckableRadios5">
                                                 <p> {{pf.name}} </p>
-                                                <div>
+                                                <div onload="numberWithCommas('{{pf.balance}}')">
                                                     <ul>
+                                                        
                                                         <li>
                                                             <span class="d-block small opacity-50">Balance</span>
-                                                            <span class="d-block">${{pf.balance}}</span>
+                                                            <span class="d-block" id="{{pf.name}}">$</span>
+                                                            <script>
+                                                              function numberWithCommas(x) {
+                                                                  const res = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                                                  const d = '$';
+                                                                  const fini = d.concat(res)
+                                                                  return fini
+                                                              }
+                                                              
+                                                              var r = numberWithCommas('{{pf.balance}}')
+                                                              document.getElementById('{{pf.name}}').innerHTML=r;
+                                                            </script>
                                                         </li>
                                                         <li style="margin-left:330px;">
                                                             <span class="d-block small opacity-50">Performance</span>
@@ -372,6 +421,17 @@ margin-left: 0px;
                                                             </div>
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                             <button type="submit" class="btn btn-primary" name="savew" value="savew">Save changes</button>
+                                                            <div class="form-floating">
+                                                              <h5 style="margin-top: 10px;">Delete Watch Item</h5>
+                                                              <select class="form-control" aria-label="Default select example" name="deletewi">
+                                                                <option value="">Select WatchItem</option>
+                                                                {% for wi in user.WatchItem.all %}
+                                                                  <option>{{wi.ticker}}</option>
+                                                                {% endfor %}
+                                                                
+                                                              </select>
+                                                              <button type="submit" class="btn btn-danger" name="delete" value="delete">Confirm Delete</button>
+                                                          </div>
                                                         </form>
                                                     </div>
                                                     <div class="modal-footer">
