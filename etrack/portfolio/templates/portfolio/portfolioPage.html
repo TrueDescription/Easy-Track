@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 {% extends 'main/base.html'%}
 <head>
-
+  
 </head>
 
 
@@ -31,6 +31,7 @@
     flex-direction: column;
     flex-wrap: wrap;
     margin-top: 50px;
+    
     }
     .b-example-divider {
       height: 3rem;
@@ -136,12 +137,13 @@ html {
 
 main {
   display: flex;
-  flex-wrap: nowrap;
   height: 100vh;
   height: -webkit-fill-available;
-  max-height: 100vh;
   overflow-x: auto;
   overflow-y: hidden;
+  margin: auto;
+  -o-object-fit: contain;
+
 }
 
 .b-example-divider {
@@ -215,9 +217,7 @@ main {
 .fw-semibold { font-weight: 600; }
 .lh-tight { line-height: 1.25; }
 
-.chunck {
-margin-left: 0px;
-}
+
 
 .inbetween {
     margin-bottom: 10px;
@@ -245,29 +245,46 @@ margin-left: 0px;
     pointer-events: all;
 }
 
+.mcen {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-left: 150px;
+  margin-right: 150px;
+  margin-bottom: 50px;
+  padding: auto;
+  min-width: 600px;
+}
 
+.lol{
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  padding: auto;
+}
 
 </style>
-<section class="border-top">
-    <div class="center">
+<main class="mcen">
+<section>
+    <div>
         <ul class="flowdown">
             <li>
                 <!-- This is the container containing Welcome msg and balance from left to right -->
                 <div>
                     <ul class="flowdown">
                         <li>
-                            <h3>Welcome back. You have</h3>
+                            <h2>Welcome back. You have</h2>
                         </li>
-                        <li>
+                        <li style="margin-bottom: 50px;">
                             
-                            <h2>${{total}}</h2> <h5>CAD</h5>
+                            <h1>${{total}}</h1> <h5 style="opacity: 0.7;">CAD</h5>
                             
                         </li>
                     </ul>
                 </div>
             </li>
 
-            <li style="margin-top:50px;">
+            <li>
                 <ul>
                     <li>
                         <h4> Portfolio's </h4>
@@ -372,8 +389,11 @@ margin-left: 0px;
                                                             <span class="d-block" id="{{pf.name}}">$</span>
                                                             <script>
                                                               function numberWithCommas(x) {
-                                                                  const res = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                                                   const d = '$';
+                                                                  const dec = x.split('.')[1]
+                                                                  const len = dec && dec.length > 2 ? dec.length : 2
+                                                                  const finalres = Number(x).toFixed(len)
+                                                                  const res = finalres.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                                                   const fini = d.concat(res)
                                                                   return fini
                                                               }
@@ -382,9 +402,23 @@ margin-left: 0px;
                                                               document.getElementById('{{pf.name}}').innerHTML=r;
                                                             </script>
                                                         </li>
-                                                        <li style="margin-left:330px;">
-                                                            <span class="d-block small opacity-50">Performance</span>
-                                                            <span class="d-block" style="color:green">+133.79%</span>
+                                                        <style>
+                                                          .per{
+                                                            position: absolute;
+                                                            bottom: 43px;
+                                                            right: 20px;
+                                                            opacity: 0.5;
+                                                            font-size: 13px;
+                                                          }
+                                                          .num {
+                                                            position: absolute;
+                                                            bottom: 18px;
+                                                            right: 20px;
+                                                          }
+                                                        </style>
+                                                        <li style="margin-left:30px;">
+                                                            <span class="per" id="per">Performance</span>
+                                                            <span class="d-block num" style="color:green">+133.79%</span>
                                                         </li>
 
                                                     </ul>
@@ -442,14 +476,29 @@ margin-left: 0px;
                                         </div>
                                     </div>
                             </a>
-                                {% for pf in user.WatchItem.all %}
+                                {% for wi in user.WatchItem.all %}
                                   <a href="#" class="list-group-item list-group-item-action" aria-current="true">
                                     <div class="d-flex w-100 justify-content-between">
-                                      <h5 class="mb-1">{{pf.ticker}}</h5>
-                                      <small>$172.39</small>
+                                      <h5 class="mb-1">{{wi.ticker}}</h5>
+                                      <small id="{{wi.ticker}}">{{wi.curr_price}}</small>
+                                      <script>
+                                        function numberWithCommas(x) {
+                                            const d = '$';
+                                            const dec = x.split('.')[1]
+                                            const len = dec && dec.length > 2 ? dec.length : 2
+                                            const finalres = Number(x).toFixed(len)
+                                            const res = finalres.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                            const fini = d.concat(res)
+
+                                            return fini
+                                        }
+                                        
+                                        var r = numberWithCommas('{{wi.curr_price}}')
+                                        document.getElementById('{{wi.ticker}}').innerHTML=r;
+                                      </script>
                                     </div>
                                     <p class="mb-1">Some placeholder content in a paragraph.</p>
-                                    <small>Apple Inc.</small>
+                                    <small>{{wi.name}}</small>
                                   </a>
                                 {% endfor %}
                             </div>
@@ -461,6 +510,7 @@ margin-left: 0px;
     </div>
 
 </section>
+</main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>

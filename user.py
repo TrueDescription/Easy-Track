@@ -5,7 +5,7 @@ import json
 import datetime
 from transaction import Transaction
 from position import Position
-#from main import UserData
+from main import UserData
 
 from option_transaction import OptionTransaction
 
@@ -174,7 +174,7 @@ if __name__ == '__main__':
     print(U.user_data.positions['msft'].shares)
     print(U.cash)
     print(U.user_data.positions['msft'].dividends)
-    U.sell_security(U.user_data.positions['msft'], 500, datetime.now(), 0, 300)
+    #U.sell_security(U.user_data.positions['msft'], 500, datetime.now(), 0, 300)
     print('b')
     print(U.user_data.positions['msft'].shares)
     print(U.user_data.positions['msft'].dividends)
@@ -183,4 +183,4 @@ if __name__ == '__main__':
     print(U.get_mv())
     print('d')
     U.buy_security(new_p, 250, datetime(2020, 10, 9), 0, 300)
-    print(U.graph())
+    #print(U.graph())
