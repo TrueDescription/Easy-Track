@@ -44,19 +44,20 @@ def portfolioView(response):
     
     for wi in WatchItem.objects.filter(user=response.user):
         obj = WatchItem.objects.get(id=wi.id)
-        if obj.curr_price != 0 and not is_time_between(time(9,30), time(16, 0), datetime.now().time()):
+        if obj.curr_price != 0 and not is_time_between(time(9,30), time(16, 0), obj, datetime.now().time()):
             if  obj.last_update < (obj.last_update + timedelta(minutes=5)):
                 continue
-            if is_time_between(time(9,30), time(16, 0), obj.last_update.time()): # last update was before 4pm
+            if is_time_between(time(9,30), time(16, 0), obj, obj.last_update.time()): # last update was before 4pm
                 obj.last_update = datetime.now()
             else:
                 continue
-        obj.last_update = datetime.now().time()
-        obj.curr_price = get_current_price(wi.ticker)
-        print("hello")
-        if obj.name is None:
-            obj.name = yf.Ticker(wi.ticker).info['shortName']
-        obj.save()
+        if  obj.last_update < (obj.last_update + timedelta(minutes=5)):
+            obj.last_update = datetime.now()
+            obj.curr_price = get_current_price(wi.ticker)
+            print("hello")
+            if obj.name is None:
+                obj.name = yf.Ticker(wi.ticker).info['shortName']
+            obj.save()
         
         #print(obj.curr_price)
     return render(response, 'portfolio/portfolioPage.html', context)
@@ -67,7 +68,10 @@ def get_current_price(symbol) -> float:
     todays_data = ticker.history(period='1d')
     return round(todays_data['Close'][0], 2)
 
-def is_time_between(begin_time, end_time, check_time=None):
+def is_time_between(begin_time, end_time, obj: WatchItem, check_time=None):
+    print(obj.last_update)
+    if obj.last_update.day < datetime.utcnow().day or obj.last_update.month < datetime.utcnow().month or obj.last_update.year < datetime.utcnow().year:
+        return True
     check_time = check_time or datetime.utcnow().time()
     if begin_time < end_time:
         return check_time > begin_time and check_time < end_time
