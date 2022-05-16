@@ -15,4 +15,5 @@ urlpatterns = [
     path('', include("django.contrib.auth.urls")),
     path('logout/', logv.logoutUser, name='logoutUser'),
     path('portfolio/', pv.portfolioView, name='portfolio'),
+    path('portfolio/<int:str>', views.home, name='dashboard'),
 ]

@@ -54,7 +54,7 @@ class Watchlist(models.Model):
 
 class WatchItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='WatchItem', null=True)
-    ticker = models.CharField(max_length=5)
+    ticker = models.CharField(max_length=10)
     curr_price = models.FloatField(default=0)
     name = models.CharField(max_length=100, null=True)
     last_update = models.DateTimeField(auto_now=True)

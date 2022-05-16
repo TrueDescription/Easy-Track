@@ -316,7 +316,7 @@ def convert_currency(currency_from: str, currency_to: str, amount: float) -> flo
 
 
 if __name__ == '__main__':
-    # """
+    """
     t2 = time.time()
     U = User('Faisal', datetime(2019, 10, 9), 'CAD')
     U.deposit_cash(1000000, datetime(2019, 10, 9))
@@ -340,6 +340,6 @@ if __name__ == '__main__':
     t1 = time.time()
     print(f'Total Time:|{t1 - t0}|')
     """
-    data = compound_calculator(12500, 1000, 'Monthly', 13, 'Monthly', 5)
-    print(data[60])
-    """
+    data = compound_calculator(20000, 2000, 'Monthly', 1, 'Monthly', 15)
+    print(data)
+

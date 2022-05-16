@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 import yfinance as yf
 from datetime import datetime, time, timedelta
+import requests
 
 
 # Create your views here.
@@ -54,9 +55,13 @@ def portfolioView(response):
         if  obj.last_update < (obj.last_update + timedelta(minutes=5)):
             obj.last_update = datetime.now()
             obj.curr_price = get_current_price(wi.ticker)
-            print("hello")
             if obj.name is None:
-                obj.name = yf.Ticker(wi.ticker).info['shortName']
+                temp = get_symbol_name(wi.ticker)
+                if temp:
+                    obj.name = temp
+                else:
+                    obj.name = yf.Ticker(wi.ticker).info['shortName']
+
             obj.save()
         
         #print(obj.curr_price)
@@ -77,5 +82,15 @@ def is_time_between(begin_time, end_time, obj: WatchItem, check_time=None):
         return check_time > begin_time and check_time < end_time
     else:
         return check_time > begin_time or check_time < end_time
+
+def get_symbol_name(symbol):
+    url = f'https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}&apikey=V821ZUN0AE9RUFK6'
+    r = requests.get(url)
+    data = r.json()
+    try:
+        return data['Name']
+    except Exception:
+        return ''
+    return ''
 
 

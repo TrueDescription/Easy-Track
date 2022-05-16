@@ -377,9 +377,10 @@ main {
                             <div class="list-group list-group-checkable">
                                 <ul style="margin-top:-50px;">
                                     {% for pf in user.portfolio.all %}
+                                    <a href={{pf.name}} class="inbetween">
                                         <li class="inbetween">
                                             <input type="hidden" id="listGroupCheckableRadios3" name="listGroupCheckableRadios" value="" disabled/>
-                                            <label class="list-group-item py-3" for="listGroupCheckableRadios5">
+                                            <label class="list-group-item py-3" for="listGroupCheckableRadios5" >
                                                 <p> {{pf.name}} </p>
                                                 <div onload="numberWithCommas('{{pf.balance}}')">
                                                     <ul>
@@ -426,6 +427,7 @@ main {
 
                                             </label>
                                         </li>
+                                      </a>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -478,7 +480,7 @@ main {
                                     </div>
                             </a>
                                 {% for wi in user.WatchItem.all %}
-                                  <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                                  <a href=/watchitem/{{wi.ticker}} class="list-group-item list-group-item-action" aria-current="true">
                                     <div class="d-flex w-100 justify-content-between">
                                       <h5 class="mb-1">{{wi.ticker}}</h5>
                                       <small id="{{wi.ticker}}">{{wi.curr_price}}</small>
